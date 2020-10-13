@@ -1,4 +1,4 @@
-# Ambune
+# Ambune Code test
 
 To start your Phoenix server:
 
@@ -9,12 +9,6 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# Users repo
 
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Most of the project is created via scaffolder by live, unused elements were removed and minor changes made to `form_component` to match requirements. The diff between scaffold changes should be visible via the commits
