@@ -1,18 +1,24 @@
+<div class="flash">
+  <p class="alert alert-info" role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+  <p class="alert alert-danger" role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+</div>
 <h2><%= @title %> <%= @user.id %></h2>
 
 <%= f = form_for @changeset, "#",
   id: "user-form",
   phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "save" %>
+  phx_change: "save" %>
 
   <%= label f, :email %>
-  <%= text_input f, :email %>
+  <%= text_input f, :email, phx_debounce: "blur" %>
   <%= error_tag f, :email %>
 
   <%= label f, :name %>
-  <%= text_input f, :name %>
+  <%= text_input f, :name, phx_debounce: "blur" %>
   <%= error_tag f, :name %>
-
-  <%= submit "Save", phx_disable_with: "Saving..." %>
 </form>

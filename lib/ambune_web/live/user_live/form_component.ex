@@ -2,6 +2,7 @@ defmodule AmbuneWeb.UserLive.FormComponent do
   use AmbuneWeb, :live_component
 
   alias Ambune.Users
+  import Logger
 
   @impl true
   def update(%{user: user} = assigns, socket) do
@@ -13,27 +14,20 @@ defmodule AmbuneWeb.UserLive.FormComponent do
      |> assign(:changeset, changeset)}
   end
 
+
   @impl true
-  def handle_event("validate", %{"user" => user_params}, socket) do
-    changeset =
-      socket.assigns.user
-      |> Users.change_user(user_params)
-      |> Map.put(:action, :validate)
-
-    {:noreply, assign(socket, :changeset, changeset)}
-  end
-
   def handle_event("save", %{"user" => user_params}, socket) do
     save_user(socket, socket.assigns.action, user_params)
   end
 
   defp save_user(socket, :edit, user_params) do
     case Users.update_user(socket.assigns.user, user_params) do
-      {:ok, _user} ->
+      {:ok, user} ->
         {:noreply,
          socket
          |> put_flash(:info, "User updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> assign(:changeset, Users.change_user(user))
+        }
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
