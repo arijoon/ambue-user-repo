@@ -64,10 +64,6 @@ defmodule AmbuneWeb.UserLive.FormComponent do
     socket
   end
 
-  defp user_change(action, user, form) do
-    case action do
-      :new -> Users.change_user(user, form.content)
-      :edit -> Users.change_user(user)
-    end
-  end
+  defp user_change(:new, user, form), do: Users.change_user(user, form.content)
+  defp user_change(:edit, user, _form), do: Users.change_user(user)
 end
