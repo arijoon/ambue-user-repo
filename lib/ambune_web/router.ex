@@ -1,6 +1,8 @@
 defmodule AmbuneWeb.Router do
   use AmbuneWeb, :router
 
+  import AmbuneWeb.Plug.UserIdentifier, only: [create_user_identifier: 2]
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule AmbuneWeb.Router do
     plug :put_root_layout, {AmbuneWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :create_user_identifier
   end
 
   pipeline :api do

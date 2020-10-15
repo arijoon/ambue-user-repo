@@ -2,22 +2,27 @@ defmodule AmbuneWeb.UserLive.FormComponent do
   use AmbuneWeb, :live_component
 
   alias Ambune.Users
+  alias Ambune.Forms
   import Logger
 
   @impl true
-  def update(%{user: user} = assigns, socket) do
-    changeset = Users.change_user(user)
+  def update(%{user: user, user_uuid: user_uuid, action: action} = assigns, socket) do
+
+    form = Forms.get_form(user_uuid)
+    changeset = user_change(action, user, form)
 
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:form, form)
      |> assign(:changeset, changeset)}
   end
 
 
   @impl true
   def handle_event("save", %{"user" => user_params}, socket) do
-    save_user(socket, socket.assigns.action, user_params)
+    socket
+    |> save_user(socket.assigns.action, user_params)
   end
 
   defp save_user(socket, :edit, user_params) do
@@ -39,11 +44,30 @@ defmodule AmbuneWeb.UserLive.FormComponent do
       {:ok, _user} ->
         {:noreply,
          socket
+         |> clear_form()
          |> put_flash(:info, "User created successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        update_form(socket, user_params)
         {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
+  defp clear_form(socket) do
+    Forms.delete_form(socket.assigns.form)
+    socket
+  end
+
+  defp update_form(socket, user_params) do
+    Forms.update_form(socket.assigns.form, %{ content: user_params})
+    socket
+  end
+
+  defp user_change(action, user, form) do
+    case action do
+      :new -> Users.change_user(user, form.content)
+      :edit -> Users.change_user(user)
     end
   end
 end

@@ -5,8 +5,10 @@ defmodule AmbuneWeb.UserLive.Index do
   alias Ambune.Users.User
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :users, list_users())}
+  def mount(_params, %{"user_uuid" => user_uuid}, socket) do
+    {:ok, socket
+      |> assign(:users, list_users())
+      |> assign(:user_uuid, user_uuid)}
   end
 
   @impl true
