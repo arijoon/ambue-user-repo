@@ -6,8 +6,8 @@ defmodule Ambune.UsersTest do
   describe "users" do
     alias Ambune.Users.User
 
-    @valid_attrs %{email: "some email", name: "some name"}
-    @update_attrs %{email: "some updated email", name: "some updated name"}
+    @valid_attrs %{email: "example@example.com", name: "some name"}
+    @update_attrs %{email: "example2@example.com", name: "some updated name"}
     @invalid_attrs %{email: nil, name: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -31,8 +31,8 @@ defmodule Ambune.UsersTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Users.create_user(@valid_attrs)
-      assert user.email == "some email"
-      assert user.name == "some name"
+      assert user.email == @valid_attrs.email
+      assert user.name == @valid_attrs.name
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -42,8 +42,8 @@ defmodule Ambune.UsersTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Users.update_user(user, @update_attrs)
-      assert user.email == "some updated email"
-      assert user.name == "some updated name"
+      assert user.email == @update_attrs.email
+      assert user.name == @update_attrs.name
     end
 
     test "update_user/2 with invalid data returns error changeset" do
